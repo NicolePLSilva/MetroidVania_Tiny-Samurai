@@ -10,7 +10,7 @@ public class Walk : MonoBehaviour
     float horizontal;
 
     bool canMove = true;
-   
+    public bool CanMove{ get => canMove; set => canMove = value;}
 
     Rigidbody2D rb;
 
