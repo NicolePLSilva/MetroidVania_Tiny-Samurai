@@ -27,6 +27,11 @@ public class Jump : MonoBehaviour
     bool rightWallJumpRequest;
     float currentWallTouched = 1f;
 
+    float coyoteTime = 0.2f;
+    float coyoteTimeCounter;
+    float jumpBufferTime = 0.2f;
+    float jumpBufferCounter;
+
     Rigidbody2D rb;
     Vector2 playerSize;
     Vector2 boxSize;
@@ -47,6 +52,15 @@ public class Jump : MonoBehaviour
 
     private void FixedUpdate() 
     {
+        if(grounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+
         if(jumpRequest)
         {
             JumpingProcess();
@@ -69,18 +83,31 @@ public class Jump : MonoBehaviour
 
     private void JumpInput()
     {
-        if (Input.GetButtonDown("Jump") && grounded)
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+
+        if (jumpBufferCounter > 0f && coyoteTimeCounter > 0f)
         {
             jumpRequest = true;
+            jumpBufferCounter = 0f;
         }
-        else if (Input.GetButtonDown("Jump") && onLeftWall)
+        else if (jumpBufferCounter > 0f && onLeftWall)
         {
             leftWallJumpRequest = true;
+            jumpBufferCounter = 0f;
         }
-        else if (Input.GetButtonDown("Jump") && onRightWall)
+        else if (jumpBufferCounter > 0f && onRightWall)
         {
             rightWallJumpRequest = true;
+            jumpBufferCounter = 0f;
         }
+       
     }
     private void JumpingProcess()
     {
@@ -99,6 +126,7 @@ public class Jump : MonoBehaviour
         else if(rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
             rb.gravityScale = lowJumpMultiplier;
+            coyoteTimeCounter = 0f;
         }
         else
         {
@@ -133,10 +161,10 @@ public class Jump : MonoBehaviour
         Vector2 boxCenterPoint = (Vector2) transform.position + Vector2.down * (playerSize.y + boxSize.y) * 0.5f;
         grounded = (Physics2D.OverlapBox(boxCenterPoint, boxSize * 0.7f, 0f, mask) != null );
 
-        Vector2 boxLeft = (Vector2) transform.position + Vector2.left * (playerSize.x + boxSize.x) * 0.5f;
+        Vector2 boxLeft = (Vector2) transform.position + Vector2.left * (playerSize.x + boxSize.x) * 0.3f;
         onLeftWall = (Physics2D.OverlapBox(boxLeft, boxSize * 0.7f, 90f, mask) != null);
 
-        Vector2 boxRight = (Vector2) transform.position + Vector2.right * (playerSize.x + boxSize.x) * 0.5f;
+        Vector2 boxRight = (Vector2) transform.position + Vector2.right * (playerSize.x + boxSize.x) * 0.3f;
         onRightWall = (Physics2D.OverlapBox(boxRight, boxSize * 0.7f, 90f, mask) != null);
 
 
