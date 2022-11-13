@@ -19,6 +19,13 @@ public class Jump : MonoBehaviour
     [SerializeField] Vector2 wallJumpDirection;
     [SerializeField] float wallJumpDelay = .8f;
 
+    [Header("Camera")]
+    [SerializeField] ParticleSystem surfaceContactParticles;
+    [SerializeField] CameraShake cameraShake;
+    [SerializeField] float amplitude = 0.5f;
+    [SerializeField] float frequency = 0.5f;
+    [SerializeField] float duration = 0.1f;
+
     bool jumpRequest;
     bool grounded;
     bool onLeftWall;
@@ -32,9 +39,12 @@ public class Jump : MonoBehaviour
     float jumpBufferTime = 0.2f;
     float jumpBufferCounter;
 
+    float inTheAir;
+
     Rigidbody2D rb;
     Vector2 playerSize;
     Vector2 boxSize;
+ 
     
 
     private void Awake() 
@@ -44,6 +54,7 @@ public class Jump : MonoBehaviour
 
         boxSize = new Vector2(playerSize.x, distanceToTheSurface);
     }
+
 
     void Update()
     {
@@ -55,10 +66,16 @@ public class Jump : MonoBehaviour
         if(grounded)
         {
             coyoteTimeCounter = coyoteTime;
+            if (inTheAir > 0.7f)
+            {
+                StartCoroutine(cameraShake.Noise(amplitude * inTheAir +1, frequency * inTheAir +1, duration));
+            }
+                inTheAir = 0f;
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
+            inTheAir += Time.deltaTime; 
         }
 
         if(jumpRequest)
@@ -115,6 +132,8 @@ public class Jump : MonoBehaviour
         rb.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Impulse);
         jumpRequest = false;
         grounded = false;
+
+        StartCoroutine(cameraShake.Noise(amplitude, frequency, duration));
     }
 
     private void VariableJumpHeight()
@@ -131,8 +150,7 @@ public class Jump : MonoBehaviour
         else
         {
             rb.gravityScale = 1f;
-        }
-        
+        }  
     }
 
     void WallJump(float direction)
@@ -141,6 +159,7 @@ public class Jump : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.AddForce(force, ForceMode2D.Impulse);
 
+        StartCoroutine(cameraShake.Noise(amplitude, frequency, duration));
         StartCoroutine(StopMovement());
 
         leftWallJumpRequest = false;
@@ -151,7 +170,7 @@ public class Jump : MonoBehaviour
 
     IEnumerator StopMovement()
     {
-       GetComponent<Walk>().CanMove = false;
+        GetComponent<Walk>().CanMove = false;
         yield return new WaitForSeconds(wallJumpDelay);
         GetComponent<Walk>().CanMove = true;
     }
@@ -166,8 +185,6 @@ public class Jump : MonoBehaviour
 
         Vector2 boxRight = (Vector2) transform.position + Vector2.right * (playerSize.x + boxSize.x) * 0.3f;
         onRightWall = (Physics2D.OverlapBox(boxRight, boxSize * 0.7f, 90f, mask) != null);
-
-
     }
 
     private void OnDrawGizmos() 
