@@ -20,11 +20,16 @@ public class Jump : MonoBehaviour
     [SerializeField] float wallJumpDelay = .8f;
 
     [Header("Camera")]
-    [SerializeField] ParticleSystem surfaceContactParticles;
     [SerializeField] CameraShake cameraShake;
     [SerializeField] float amplitude = 0.5f;
     [SerializeField] float frequency = 0.5f;
     [SerializeField] float duration = 0.1f;
+
+    [Header("FX")]
+    [SerializeField] ParticleSystem surfaceContactParticles;
+
+    [Header("Animation")]
+    [SerializeField] Animator animator;
 
     bool jumpRequest;
     bool grounded;
@@ -69,6 +74,9 @@ public class Jump : MonoBehaviour
             if (inTheAir > 0.7f)
             {
                 StartCoroutine(cameraShake.Noise(amplitude * inTheAir +1, frequency * inTheAir +1, duration));
+                
+                PlayDustParticle(0f, 0f, 1f, 1f * inTheAir,0.5f * inTheAir);
+                animator.SetTrigger("IsLanding");
             }
                 inTheAir = 0f;
         }
@@ -134,6 +142,9 @@ public class Jump : MonoBehaviour
         grounded = false;
 
         StartCoroutine(cameraShake.Noise(amplitude, frequency, duration));
+
+        PlayDustParticle(0f, 0f, 1f, 0f, 0f);
+      
     }
 
     private void VariableJumpHeight()
@@ -141,11 +152,13 @@ public class Jump : MonoBehaviour
         if(rb.velocity.y < 0)
         {
             rb.gravityScale = fallMultiplier;
+            animator.SetTrigger("IsFalling");
         }
         else if(rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
             rb.gravityScale = lowJumpMultiplier;
             coyoteTimeCounter = 0f;
+            animator.SetTrigger("IsFalling");
         }
         else
         {
@@ -155,11 +168,17 @@ public class Jump : MonoBehaviour
 
     void WallJump(float direction)
     {
+        StartCoroutine(cameraShake.Noise(amplitude, frequency, duration));
+        
+        
         Vector2 force = new Vector2(wallJumpVelocity * wallJumpDirection.x * direction, wallJumpVelocity * wallJumpDirection.y );
         rb.velocity = Vector2.zero;
         rb.AddForce(force, ForceMode2D.Impulse);
 
-        StartCoroutine(cameraShake.Noise(amplitude, frequency, duration));
+        //surfaceContactParticles.gameObject.transform.position = (Vector2)transform.position + Vector2.down * ( wallJumpDirection.x * direction);
+        PlayDustParticle(direction, 90f, 0.4f, 0f, 0f);
+        
+        
         StartCoroutine(StopMovement());
 
         leftWallJumpRequest = false;
@@ -173,6 +192,17 @@ public class Jump : MonoBehaviour
         GetComponent<Walk>().CanMove = false;
         yield return new WaitForSeconds(wallJumpDelay);
         GetComponent<Walk>().CanMove = true;
+    }
+
+    private void PlayDustParticle(float direction, float rotation, float scale, float spherizeDirection, float randomPosition)
+    {
+        ParticleSystem.ShapeModule dustShape = surfaceContactParticles.shape;
+        dustShape.position = new Vector3(-direction * 0.5f, 0f, 0f);
+        dustShape.rotation = new Vector3(0f, 0f, rotation);
+        dustShape.scale = new Vector3(scale, 0, 1f);
+        dustShape.sphericalDirectionAmount = spherizeDirection;
+        dustShape.randomPositionAmount = randomPosition;
+        surfaceContactParticles.Play();
     }
 
     private void CheckOverlap()
