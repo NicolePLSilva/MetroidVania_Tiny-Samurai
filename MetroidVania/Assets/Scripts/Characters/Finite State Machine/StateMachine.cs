@@ -34,7 +34,6 @@ public class StateMachine : MonoBehaviour
         if (nextState != null)
         {
             SetState(nextState);
-            nextState = null;
         }
 
         if (CurrentState != null)
@@ -45,6 +44,7 @@ public class StateMachine : MonoBehaviour
 
     private void SetState(State newState)
     {
+        nextState = null;
         if (CurrentState != null)
         {
             CurrentState.OnExit();

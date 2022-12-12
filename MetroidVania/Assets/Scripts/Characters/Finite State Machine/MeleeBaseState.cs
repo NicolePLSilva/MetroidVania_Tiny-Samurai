@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,9 @@ public class MeleeBaseState : State
    
     protected Collider2D hitCollider; //The cached hit collider 
     private List<Collider2D> colliderDamaged; //Cached already struk objects of said attack to avoid overlapping attacks on same target
-    private ParticleSystem hitEffectPrefab; //Hit Effect to spawn on the afflicted Enemy
-    // private bool cameraShake; 
+    private ParticleSystem hitEffect; //Hit Effect to spawn on the afflicted Enemy
 
-    private float attackPressTimer = 0;
+    private float attackPressTimer = 0f;
     public override void OnEnter(StateMachine state)
     {
         base.OnEnter(state);
@@ -23,7 +23,7 @@ public class MeleeBaseState : State
 
         colliderDamaged = new List<Collider2D>();
         hitCollider = GetComponent<MeleeAttack>().hitbox;
-        hitEffectPrefab = GetComponent<MeleeAttack>().hitFX;
+        hitEffect = GetComponent<MeleeAttack>().hitFX;
     }
 
     public override void OnUpdate()
@@ -38,10 +38,10 @@ public class MeleeBaseState : State
 
         if (Input.GetMouseButtonDown(0))
         {
-            attackPressTimer = 0.5f; 
+            attackPressTimer = 2f; 
         }
 
-        if (animator.GetFloat("AttackWindow.Open") > 0f && attackPressTimer > 0)
+        if (animator.GetFloat("AttackWindow.Open") > 0f && attackPressTimer > 0f)
         {
             shouldCombo = true;
         }
@@ -66,16 +66,35 @@ public class MeleeBaseState : State
 
                 if (hitTeamComponent && hitTeamComponent.teamIndex == TeamIndex.Enemy)
                 {
-                   //GameObject.Instantiate(hitEffectPrefab, collidersToDamage[i].transform);
-                    Transform t = collidersToDamage[i].transform;
-                    hitEffectPrefab.transform.position = t.position;
-                    hitEffectPrefab.Play();
-                    GetComponent<MeleeAttack>().impactShake = true;
-                   
-                    Debug.Log("Enemy has taken: " + attackIndex+" Damage");
+                    HitEffectProcess(collidersToDamage, i);
+                    
                     colliderDamaged.Add(collidersToDamage[i]);
+                    if (collidersToDamage[i] != null)
+                    {
+                        DealDamage(collidersToDamage, i);
+                    }
                 }
             }
         }
-    }   
+    }
+
+    private void DealDamage(Collider2D[] target, int i)
+    {
+        int _damage = GetComponent<MeleeAttack>().damage;
+        if (target[i].GetComponent<Health>().IsDead)
+        {
+        colliderDamaged.Remove(target[i]);
+        return;
+        }
+        target[i].GetComponent<Health>().TakeDamage(_damage);
+    }
+
+    private void HitEffectProcess(Collider2D[] collidersToDamage, int i)
+    {
+        Transform t = collidersToDamage[i].transform;
+        hitEffect.transform.position = t.position;
+        hitEffect.Play();
+
+        GetComponent<MeleeAttack>().impactShake = true;
+    }
 }

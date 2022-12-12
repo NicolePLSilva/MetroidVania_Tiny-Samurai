@@ -11,20 +11,21 @@ public class Walk : MonoBehaviour
 
     float horizontal;
     float scaleX;
+    public float ScaleX{ get => scaleX; set => scaleX = value;}
 
     bool canMove = true;
     public bool CanMove{ get => canMove; set => canMove = value;}
 
     Rigidbody2D rb;
+    Animator animator;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         scaleX = 1f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         WalkInput();
@@ -57,9 +58,16 @@ public class Walk : MonoBehaviour
         if(horizontal > 0)
         {
             scaleX = 1f;
-        }else if (horizontal < 0)
+             animator.SetBool("IsRunning", true);
+        }
+        else if (horizontal < 0)
         {
+            animator.SetBool("IsRunning", true);
             scaleX = -1f;
+        }
+        else
+        {
+            animator.SetBool("IsRunning", false);
         }
         transform.localScale = new Vector3(scaleX , 1f, 1f);
         PlayDustParticle();

@@ -9,9 +9,9 @@ public class GroundFinisherState : MeleeBaseState
         base.OnEnter(state);
         
         attackIndex = 3;
-        duration = 0.75f;
-        animator.SetTrigger("Attack"+3);
-        Debug.Log("Player attack "+3+" Fired!");
+        duration = .75f;
+        animator.SetTrigger("Attack"+attackIndex);
+        Debug.Log("Player attack "+attackIndex+" Fired!");
     }
 
     public override void OnUpdate()

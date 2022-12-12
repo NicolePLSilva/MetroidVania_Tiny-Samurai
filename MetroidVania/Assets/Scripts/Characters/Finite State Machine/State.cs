@@ -7,6 +7,7 @@ public abstract class State
     protected float time { get; set; }
     protected float fixedTime { get; set; }
     protected float lateTime { get; set; }
+
     public StateMachine stateMachine;
     
     //Used to initialize variables
@@ -43,8 +44,7 @@ public abstract class State
     /// Removes a gameObject. component, or asset.
     /// <summary>
     /// <param name="obj">The type of Component to retrieve.</param>
-
-    protected static void destroy(UnityEngine.Object obj)
+    protected static void Destroy(UnityEngine.Object obj)
     {
         UnityEngine.Object.Destroy(obj);
     }
@@ -54,7 +54,6 @@ public abstract class State
     /// <summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-
     protected T GetComponent<T>() where T : Component {return stateMachine.GetComponent<T>();}
 
     /// <summary>
@@ -62,7 +61,6 @@ public abstract class State
     /// <summary>
     /// <param name="type">The type of cComponent to retrieve.</param>
     /// <returns></returns>
-
     protected Component GetComponent(System.Type type) {return stateMachine.GetComponent(type);}
 
     /// <summary>
@@ -70,7 +68,6 @@ public abstract class State
     /// <summary>
     /// <param name="type">The type of cComponent to retrieve.</param>
     /// <returns></returns>
-
     protected Component GetComponent(string type) { return stateMachine.GetComponent(type);}
 
     #endregion

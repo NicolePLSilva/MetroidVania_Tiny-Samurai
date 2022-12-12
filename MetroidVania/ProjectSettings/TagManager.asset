@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - AttackPoint
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -14,9 +16,9 @@ TagManager:
   - Player
   - Surface
   - Target
-  - 
-  - 
-  - 
+  - AttackPoint
+  - Enemy
+  - Platform
   - 
   - 
   - 

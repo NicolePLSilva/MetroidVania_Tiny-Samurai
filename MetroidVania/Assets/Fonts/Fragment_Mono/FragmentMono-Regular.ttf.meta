@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 483efc41bef93a24d93b14c3d211ce6a
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Fragment Mono
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 760698f0f9b97c4499be754f709c5fb9, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
