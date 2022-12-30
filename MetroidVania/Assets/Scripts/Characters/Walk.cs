@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Walk : MonoBehaviour
 {
+    private StateMachine meleeStateMachine;
     [SerializeField] float runSpeed = 6f;
     [Header("FX")]
     [SerializeField] ParticleSystem surfaceContactParticles;
@@ -18,6 +19,25 @@ public class Walk : MonoBehaviour
 
     Rigidbody2D rb;
     Animator animator;
+
+     private NewControls myInput;
+
+  private void Awake()
+  {
+      myInput = new NewControls();
+     // myInput.Player.attack.performed += ctx => CheckAttack();
+
+  }
+
+//   private void OnEnable()
+//   {
+//       myInput.Enable();
+//   }
+
+//   private void OnDisable()
+//   {
+//       myInput.Disable();
+//   }
 
     void Start()
     {
@@ -33,6 +53,7 @@ public class Walk : MonoBehaviour
 
     private void FixedUpdate()
     {
+       
         if(canMove)
         {
             WalkingMovement();

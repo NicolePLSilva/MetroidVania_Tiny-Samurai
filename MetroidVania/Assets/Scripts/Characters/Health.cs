@@ -84,9 +84,14 @@ public class Health : MonoBehaviour
 
     IEnumerator GameOverCoroutine()
     {
+        gameOverScreen.SetActive(true);
         Time.timeScale = 0.5f;
-        gameObject.SetActive(true);
+        gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponent<Walk>().enabled = false;
+        gameObject.GetComponent<Jump>().enabled = false;
         yield return new WaitForSeconds(gameOverDelay);
+        gameObject.GetComponent<Walk>().enabled = true;
+        gameObject.GetComponent<Jump>().enabled = true;
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

@@ -125,6 +125,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3615141662606219779, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
@@ -333,7 +334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6233655789946832157, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6233655789946832157, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -382,10 +383,21 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6233655789946832152, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
     - {fileID: 6233655789946832153, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
-    - {fileID: 6233655789946832151, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
     - {fileID: 6233655789946832145, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
     - {fileID: 6233655789946832146, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
     - {fileID: 6233655789946832149, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
+    - {fileID: 6233655789946832150, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
+    - {fileID: 6233655789946832151, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6233655789946832157, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7647712284548901023}
+    - targetCorrespondingSourceObject: {fileID: 6233655789946832157, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 655302981}
+    - targetCorrespondingSourceObject: {fileID: 6233655789946832157, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1369348587}
   m_SourcePrefab: {fileID: 100100000, guid: 87dcfabbcb3a2f145ae29e68e90cf53a, type: 3}
 --- !u!61 &7455817103367349645 stripped
 BoxCollider2D:
@@ -451,6 +463,21 @@ MonoBehaviour:
   hitFX: {fileID: 7455817103655007286}
   camShake: {fileID: 0}
   hitbox: {fileID: 7455817103367349645}
+--- !u!114 &1003664369927044863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7455817104128184667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
 --- !u!114 &1957489203808023713
 MonoBehaviour:
   m_ObjectHideFlags: 0

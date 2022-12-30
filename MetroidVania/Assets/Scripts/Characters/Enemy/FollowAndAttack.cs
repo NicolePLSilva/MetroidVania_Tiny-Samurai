@@ -31,9 +31,9 @@ public class FollowAndAttack : MonoBehaviour
     int damage = 1;
 
     Patrol patrol;
-   
-    private List<Collider2D> colliderDamaged; 
-    
+
+    private List<Collider2D> colliderDamaged;
+
     private void Awake()
     {
         inTimer = timer;
@@ -41,22 +41,22 @@ public class FollowAndAttack : MonoBehaviour
         patrol = GetComponent<Patrol>();
         colliderDamaged = new List<Collider2D>();
     }
+
     void FixedUpdate()
     {
         hit = Physics2D.Raycast(raycast.position, patrol.Direction, raycastlength, raycastMask);
-        Debug.Log("Direction :"+patrol.Direction);
         RaycastDebugger();
 
         if (hit.collider != null)
         {
             EnemyLogic();
         }
-        else if(hit.collider == null)
+        else if (hit.collider == null)
         {
             IsPlayerInRange = false;
         }
 
-        if(IsPlayerInRange == false)
+        if (IsPlayerInRange == false)
         {
             patrol.MustPatrol = true;
             patrol.PatrolProcess();
@@ -66,7 +66,7 @@ public class FollowAndAttack : MonoBehaviour
 
     private void EnemyLogic()
     {
-        if(target == null)
+        if (target == null)
         {
             return;
         }
@@ -77,19 +77,17 @@ public class FollowAndAttack : MonoBehaviour
             Move();
             StopAttack();
         }
-        else if(distance <= attackDistance && cooldown == false)
+        else if (distance <= attackDistance && cooldown == false)
         {
             if (fixedTime >= duration)
             {
                 patrol.MustPatrol = false;
-                //Attack();
                 animator.SetTrigger("Attack1");
                 if (animator.GetFloat("Weapon.Active") > 0f)
                 {
                     Attack();
                 }
             }
-            
         }
 
         if (cooldown)
@@ -103,9 +101,8 @@ public class FollowAndAttack : MonoBehaviour
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("EnemyMeleeAttack1"))
         {
-            
-           Vector2 targetPosition = new Vector2(target.transform.position.x, transform.position.y);
-           transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            Vector2 targetPosition = new Vector2(target.transform.position.x, transform.position.y);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
         }
     }
 
@@ -115,18 +112,13 @@ public class FollowAndAttack : MonoBehaviour
         attackMood = true;
         animator.SetBool("IsRunning", false);
 
-
-            if (hitbox)
-            {
-                hitFX.transform.position = target.transform.position;
-                hitFX.Play();
-                StartCoroutine(camShake.Noise(0.8f,0.8f, 0.1f));
-                target.GetComponent<Health>().TakeDamage(damage);
-            }
-                
-        
-        
-        
+        if (hitbox)
+        {
+            hitFX.transform.position = target.transform.position;
+            hitFX.Play();
+            StartCoroutine(camShake.Noise(0.8f, 0.8f, 0.1f));
+            target.GetComponent<Health>().TakeDamage(damage);
+        }
     }
 
     void Cooldown()
@@ -144,14 +136,14 @@ public class FollowAndAttack : MonoBehaviour
         cooldown = false;
         attackMood = false;
         animator.ResetTrigger("Attack1");
-        
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other != null)
         {
-            if(other.gameObject.tag == "Player")
+            if (other.gameObject.tag == "Player")
             {
                 target = other.gameObject;
                 IsPlayerInRange = true;
@@ -167,7 +159,7 @@ public class FollowAndAttack : MonoBehaviour
         }
         else if (attackDistance > distance)
         {
-             Debug.DrawRay(raycast.position, patrol.Direction * raycastlength, Color.green);
+            Debug.DrawRay(raycast.position, patrol.Direction * raycastlength, Color.green);
         }
     }
 

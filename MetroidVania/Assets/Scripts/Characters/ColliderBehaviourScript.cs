@@ -13,11 +13,6 @@ public class ColliderBehaviourScript : MonoBehaviour
         health = GetComponent<Health>();
     }
 
-    void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter2D(Collision2D other)
     {
         if(other.gameObject.tag == "Enemy")

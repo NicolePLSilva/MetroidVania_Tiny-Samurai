@@ -19,12 +19,12 @@ public class Dash : MonoBehaviour
 
     Rigidbody2D rb;
 
-    Animator animator;   
+    Animator animator;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        trail = GetComponent<TrailRenderer>(); 
+        trail = GetComponent<TrailRenderer>();
         animator = GetComponent<Animator>();
 
         melee = GetComponent<MeleeAttack>();
@@ -50,7 +50,7 @@ public class Dash : MonoBehaviour
         isDashing = true;
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-         rb.velocity = Vector2.zero;
+        rb.velocity = Vector2.zero;
         rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
         trail.emitting = true;
         animator.SetBool("IsDashing", true);
