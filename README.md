@@ -10,6 +10,6 @@ Sistema de vida, hit point flutuantes ao atacar inimigos, receber dano, GameOver
 Sistema de IA do inimigo, patrulha, detecção do player e ataque (corrigir: adicionar comportamento de detectar após receber dano do player, 
 parar comportamento de patrulha quando avistar player e estiver próximo dos limites do terreno/plataforma)
 
-
+Itch.io https://pls-nick.itch.io/tiny-samurai
 
 
